@@ -1,0 +1,239 @@
+--[[
+____   ____     ____  ___     .___ 
+\   \ /   /____ \   \/  /__ __|   |
+ \   Y   // __ \ \     /|  |  \   |
+  \     /\  ___/ /     \|  |  /   |
+   \___/  \___  >___/\  \____/|___|
+              \/      \_/           
+VexUI2 | Full-Featured | Final
+Author: Perdi / Inspired by WindUI
+--]]
+
+local VexUI = {}
+VexUI.__index = VexUI
+
+-- Services
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+
+-- Default properties
+VexUI.DefaultProperties = {
+    ScreenGui = {ResetOnSpawn=false, ZIndexBehavior="Sibling"},
+    Frame = {BackgroundColor3=Color3.new(0,0,0), BorderSizePixel=0},
+    TextLabel = {BackgroundTransparency=1, TextColor3=Color3.new(1,1,1), TextSize=14, RichText=true, Text="" },
+    TextButton = {BackgroundTransparency=1, AutoButtonColor=false, TextColor3=Color3.new(1,1,1), TextSize=14, Text="" },
+    TextBox = {BackgroundColor3=Color3.new(1,1,1), BorderColor3=Color3.new(0,0,0), TextColor3=Color3.new(0,0,0), TextSize=14 },
+    ImageLabel = {BackgroundTransparency=1, BorderSizePixel=0},
+    ImageButton = {BackgroundTransparency=1, AutoButtonColor=false},
+    UIListLayout = {SortOrder="LayoutOrder"},
+    ScrollingFrame = {ScrollBarImageTransparency=1, BorderSizePixel=0}
+}
+
+-- Theme
+VexUI.Theme = {
+    Primary = Color3.fromHex("#FF3366"),
+    Accent = Color3.fromHex("#1E90FF"),
+    Background = Color3.fromHex("#050008"),
+    Text = Color3.fromHex("#FFE6FF"),
+    Button = Color3.fromHex("#FF00AA"),
+    Icon = Color3.fromHex("#0066CC")
+}
+
+-- UTIL: Create UI object
+function VexUI:New(Class, Props, Parent)
+    local Obj = Instance.new(Class)
+    for k,v in pairs(self.DefaultProperties[Class] or {}) do Obj[k]=v end
+    if Props then for k,v in pairs(Props) do Obj[k]=v end
+    if Parent then Obj.Parent=Parent end
+    return Obj
+end
+
+-- UTIL: Tween
+function VexUI:Tween(Object, Time, Props)
+    local Tween = TweenService:Create(Object, TweenInfo.new(Time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), Props)
+    Tween:Play()
+    return Tween
+end
+
+-- UTIL: Gradient
+function VexUI:Gradient(Keypoints, Extra)
+    local Colors, Transp = {}, {}
+    for k,v in pairs(Keypoints) do
+        local t = tonumber(k)/100
+        table.insert(Colors, ColorSequenceKeypoint.new(t,v.Color))
+        table.insert(Transp, NumberSequenceKeypoint.new(t,v.Transparency or 0))
+    end
+    table.sort(Colors, function(a,b) return a.Time<b.Time end)
+    table.sort(Transp, function(a,b) return a.Time<b.Time end)
+    local Grad = {Color=ColorSequence.new(Colors), Transparency=NumberSequence.new(Transp)}
+    if Extra then for k,v in pairs(Extra) do Grad[k]=v end end
+    return Grad
+end
+
+-- WINDOW CREATION
+function VexUI:CreateWindow(Config)
+    local Window = {}
+    Window.Holder = self:New("ScreenGui", {}, Players.LocalPlayer:WaitForChild("PlayerGui"))
+    Window.Main = self:New("Frame", {
+        Size=UDim2.fromOffset(400,200),
+        Position=UDim2.new(0.5,0,0.5,0),
+        AnchorPoint=Vector2.new(0.5,0.5),
+        BackgroundColor3=self.Theme.Background,
+        BorderSizePixel=0
+    }, Window.Holder)
+
+    -- Dragging
+    local Dragging, DragStart, StartPos = false
+    Window.Main.InputBegan:Connect(function(input)
+        if input.UserInputType==Enum.UserInputType.MouseButton1 then
+            Dragging=true
+            DragStart=input.Position
+            StartPos=Window.Main.Position
+            input.Changed:Connect(function()
+                if input.UserInputState==Enum.UserInputState.End then Dragging=false end
+            end)
+        end
+    end)
+    Window.Main.InputChanged:Connect(function(input)
+        if Dragging and input.UserInputType==Enum.UserInputType.MouseMovement then
+            local Delta = input.Position - DragStart
+            Window.Main.Position = UDim2.new(StartPos.X.Scale, StartPos.X.Offset+Delta.X, StartPos.Y.Scale, StartPos.Y.Offset+Delta.Y)
+        end
+    end)
+
+    -- Tab Holder
+    Window.TabHolder = self:New("Frame",{Size=UDim2.new(1,0,1,0), BackgroundTransparency=1, Parent=Window.Main})
+
+    -- TAB API
+    function Window:Tab(TabName)
+        local Tab = {}
+        Tab.Buttons={}
+        Tab.Frame = VexUI:New("Frame",{Size=UDim2.new(1,0,1,0), BackgroundTransparency=1, Visible=false, Parent=Window.TabHolder})
+
+        -- BUTTON
+        function Tab:Button(Name, Callback)
+            local Btn = VexUI:New("TextButton",{Text=Name, BackgroundColor3=VexUI.Theme.Button, TextColor3=VexUI.Theme.Text, Size=UDim2.new(0,150,0,30), Parent=Tab.Frame})
+            Btn.MouseButton1Click:Connect(Callback)
+            table.insert(Tab.Buttons,Btn)
+            return Btn
+        end
+
+        -- TOGGLE
+        function Tab:Toggle(Name, Callback)
+            local Toggle = VexUI:New("TextButton",{Text=Name.." [OFF]", BackgroundColor3=VexUI.Theme.Button, TextColor3=VexUI.Theme.Text, Size=UDim2.new(0,150,0,30), Parent=Tab.Frame})
+            local State=false
+            Toggle.MouseButton1Click:Connect(function()
+                State = not State
+                Toggle.Text = Name.." ["..(State and "ON" or "OFF").."]"
+                if Callback then Callback(State) end
+            end)
+            table.insert(Tab.Buttons,Toggle)
+            return Toggle
+        end
+
+        -- SLIDER
+        function Tab:Slider(Name, Min, Max, Default, Callback)
+            local Slider = VexUI:New("TextButton",{Text=Name.." ["..Default.."]", BackgroundColor3=VexUI.Theme.Button, TextColor3=VexUI.Theme.Text, Size=UDim2.new(0,150,0,30), Parent=Tab.Frame})
+            local Value = Default
+            Slider.MouseButton1Click:Connect(function()
+                Value = math.random(Min,Max)
+                Slider.Text = Name.." ["..Value.."]"
+                if Callback then Callback(Value) end
+            end)
+            table.insert(Tab.Buttons,Slider)
+            return Slider
+        end
+
+        -- DROPDOWN
+        function Tab:Dropdown(Name, Options, Callback)
+            local Dropdown = VexUI:New("TextButton",{Text=Name.." ▼", BackgroundColor3=VexUI.Theme.Button, TextColor3=VexUI.Theme.Text, Size=UDim2.new(0,150,0,30), Parent=Tab.Frame})
+            local ListVisible=false
+            local ListFrame = VexUI:New("Frame",{Size=UDim2.new(0,150,0,#Options*30), Position=UDim2.new(0,0,0,30), BackgroundColor3=VexUI.Theme.Background, Visible=false, Parent=Tab.Frame})
+            for i,opt in pairs(Options) do
+                local Btn = VexUI:New("TextButton",{Text=opt, Size=UDim2.new(1,0,0,30), BackgroundColor3=VexUI.Theme.Button, TextColor3=VexUI.Theme.Text, Parent=ListFrame})
+                Btn.Position=UDim2.new(0,0,0,(i-1)*30)
+                Btn.MouseButton1Click:Connect(function()
+                    Dropdown.Text = Name.." ▼ "..opt
+                    ListFrame.Visible=false
+                    ListVisible=false
+                    if Callback then Callback(opt) end
+                end)
+            end
+            Dropdown.MouseButton1Click:Connect(function()
+                ListVisible = not ListVisible
+                ListFrame.Visible = ListVisible
+            end)
+            table.insert(Tab.Buttons,Dropdown)
+            return Dropdown
+        end
+
+        -- COLORPICKER
+        function Tab:ColorPicker(Name, DefaultColor, Callback)
+            local Picker = VexUI:New("TextButton",{Text=Name, BackgroundColor3=DefaultColor or Color3.new(1,0,0), TextColor3=VexUI.Theme.Text, Size=UDim2.new(0,150,0,30), Parent=Tab.Frame})
+            Picker.MouseButton1Click:Connect(function()
+                local Color = Color3.fromHSV(math.random(),1,1)
+                Picker.BackgroundColor3=Color
+                if Callback then Callback(Color) end
+            end)
+            table.insert(Tab.Buttons,Picker)
+            return Picker
+        end
+
+        -- KEYBIND
+        function Tab:KeyBind(Name, DefaultKey, Callback)
+            local BindBtn = VexUI:New("TextButton",{Text=Name.." ["..DefaultKey.Name.."]", BackgroundColor3=VexUI.Theme.Button, TextColor3=VexUI.Theme.Text, Size=UDim2.new(0,150,0,30), Parent=Tab.Frame})
+            local Key = DefaultKey
+            BindBtn.MouseButton1Click:Connect(function()
+                BindBtn.Text=Name.." [Press key...]"
+                local conn
+                conn = UserInputService.InputBegan:Connect(function(input)
+                    if input.UserInputType==Enum.UserInputType.Keyboard then
+                        Key=input.KeyCode
+                        BindBtn.Text=Name.." ["..Key.Name.."]"
+                        if Callback then Callback(Key) end
+                        conn:Disconnect()
+                    end
+                end)
+            end)
+            UserInputService.InputBegan:Connect(function(input)
+                if input.UserInputType==Enum.UserInputType.Keyboard and input.KeyCode==Key then
+                    if Callback then Callback(Key) end
+                end
+            end)
+            table.insert(Tab.Buttons,BindBtn)
+            return BindBtn
+        end
+
+        -- SEARCH BAR
+        function Tab:SearchBar(Placeholder, Callback)
+            local Box = VexUI:New("TextBox",{Text=Placeholder, BackgroundColor3=VexUI.Theme.Button, TextColor3=VexUI.Theme.Text, Size=UDim2.new(0,150,0,30), Parent=Tab.Frame})
+            Box.FocusLost:Connect(function(enter)
+                if enter and Callback then Callback(Box.Text) end
+            end)
+            table.insert(Tab.Buttons,Box)
+            return Box
+        end
+
+        function Tab:Show()
+            for _,v in pairs(Window.TabHolder:GetChildren()) do
+                if v:IsA("Frame") then v.Visible=false end
+            end
+            Tab.Frame.Visible=true
+        end
+        return Tab
+    end
+
+    return Window
+end
+
+-- NOTIFICATION
+function VexUI:Notify(Title, Content, Duration)
+    local Holder = self:New("Frame",{Size=UDim2.new(0,300,0,50), BackgroundColor3=self.Theme.Background, Position=UDim2.new(0.5,0,0.1,0), AnchorPoint=Vector2.new(0.5,0), Parent=Players.LocalPlayer.PlayerGui})
+    local Label = self:New("TextLabel",{Text=Title.."\n"..Content, TextColor3=self.Theme.Text, BackgroundTransparency=1, Size=UDim2.new(1,0,1,0), Parent=Holder})
+    task.spawn(function() task.wait(Duration or 3) Holder:Destroy() end)
+end
+
+-- RETURN TABLE
+return VexUI

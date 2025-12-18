@@ -1,0 +1,615 @@
+--==================================================
+-- VEX UI - CHLOE X REPLICA (FIXED DISCORD LOGO)
+--==================================================
+
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local Player = Players.LocalPlayer
+local GuiParent = Player:WaitForChild("PlayerGui")
+
+-- CLEAN
+if GuiParent:FindFirstChild("ThanHub_EXEC_SAFE") then
+    GuiParent.ThanHub_EXEC_SAFE:Destroy()
+end
+
+-- SCREEN GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ThanHub_EXEC_SAFE"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.IgnoreGuiInset = true
+ScreenGui.Parent = GuiParent
+
+--==================================================
+-- FLOATING VEX LOGO BUTTON
+--==================================================
+local LogoButton = Instance.new("TextButton")
+LogoButton.Size = UDim2.fromOffset(70,70)
+LogoButton.Position = UDim2.fromOffset(20,200)
+LogoButton.Text = ""
+LogoButton.BackgroundColor3 = Color3.fromRGB(150,50,200)
+LogoButton.BorderSizePixel = 0
+LogoButton.Visible = false
+LogoButton.ZIndex = 9999
+LogoButton.BackgroundTransparency = 0
+LogoButton.Parent = ScreenGui
+
+local LogoCorner = Instance.new("UICorner", LogoButton)
+LogoCorner.CornerRadius = UDim.new(0,12)
+
+local LogoStroke = Instance.new("UIStroke")
+LogoStroke.Color = Color3.fromRGB(200,100,255)
+LogoStroke.Thickness = 3
+LogoStroke.Transparency = 0
+LogoStroke.Parent = LogoButton
+
+-- VEX LOGO
+local LogoContainer = Instance.new("Frame")
+LogoContainer.Size = UDim2.fromScale(0.85, 0.85)
+LogoContainer.Position = UDim2.fromScale(0.075, 0.075)
+LogoContainer.BackgroundTransparency = 1
+LogoContainer.ZIndex = 10000
+LogoContainer.Parent = LogoButton
+
+local LetterV = Instance.new("TextLabel")
+LetterV.Size = UDim2.fromScale(1, 0.28)
+LetterV.BackgroundTransparency = 1
+LetterV.Text = "V"
+LetterV.Font = Enum.Font.GothamBold
+LetterV.TextSize = 24
+LetterV.TextColor3 = Color3.new(0,0,0)
+LetterV.TextScaled = true
+LetterV.ZIndex = 10001
+LetterV.Parent = LogoContainer
+
+local LetterE = Instance.new("TextLabel")
+LetterE.Size = UDim2.fromScale(1, 0.36)
+LetterE.Position = UDim2.fromScale(0, 0.32)
+LetterE.BackgroundTransparency = 1
+LetterE.Text = "e"
+LetterE.Font = Enum.Font.GothamBold
+LetterE.TextSize = 28
+LetterE.TextColor3 = Color3.new(0,0,0)
+LetterE.TextScaled = true
+LetterE.ZIndex = 10001
+LetterE.Parent = LogoContainer
+
+local LetterX = Instance.new("TextLabel")
+LetterX.Size = UDim2.fromScale(1, 0.28)
+LetterX.Position = UDim2.fromScale(0, 0.72)
+LetterX.BackgroundTransparency = 1
+LetterX.Text = "x"
+LetterX.Font = Enum.Font.GothamBold
+LetterX.TextSize = 24
+LetterX.TextColor3 = Color3.new(0,0,0)
+LetterX.TextScaled = true
+LetterX.ZIndex = 10001
+LetterX.Parent = LogoContainer
+
+--==================================================
+-- MAIN FRAME (UKURAN SAMA KAYAK CHLOE X)
+--==================================================
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.fromOffset(670,410) -- EXACT CHLOE X SIZE
+MainFrame.Position = UDim2.fromScale(0.5,0.5) - UDim2.fromOffset(335,205)
+MainFrame.BackgroundColor3 = Color3.fromRGB(17,20,28) -- DARK BG CHLOE X
+MainFrame.BorderSizePixel = 0
+MainFrame.Parent = ScreenGui
+
+local MainCorner = Instance.new("UICorner", MainFrame)
+MainCorner.CornerRadius = UDim.new(0,6)
+
+local MainStroke = Instance.new("UIStroke")
+MainStroke.Color = Color3.fromRGB(35,40,50) -- SUBTLE BORDER
+MainStroke.Thickness = 1
+MainStroke.Parent = MainFrame
+
+--==================================================
+-- HEADER (KAYAK CHLOE X)
+--==================================================
+local Header = Instance.new("Frame", MainFrame)
+Header.Size = UDim2.new(1,0,0,42)
+Header.BackgroundColor3 = Color3.fromRGB(22,26,35)
+Header.BorderSizePixel = 0
+
+local HeaderCorner = Instance.new("UICorner", Header)
+HeaderCorner.CornerRadius = UDim.new(0,6)
+
+-- BOTTOM BORDER LINE (KAYAK CHLOE X)
+local HeaderLine = Instance.new("Frame", Header)
+HeaderLine.Size = UDim2.new(1,0,0,1)
+HeaderLine.Position = UDim2.new(0,0,1,0)
+HeaderLine.BackgroundColor3 = Color3.fromRGB(35,40,50)
+HeaderLine.BorderSizePixel = 0
+
+local Title = Instance.new("TextLabel", Header)
+Title.Size = UDim2.new(1,-100,1,0)
+Title.Position = UDim2.new(0,12,0,0)
+Title.BackgroundTransparency = 1
+Title.Text = "Chloe X | Version 1.0.8"
+Title.Font = Enum.Font.Gotham
+Title.TextSize = 14
+Title.TextColor3 = Color3.fromRGB(90,140,200) -- CYAN TEXT
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+local MinimizeBtn = Instance.new("TextButton", Header)
+MinimizeBtn.Size = UDim2.fromOffset(28,28)
+MinimizeBtn.Position = UDim2.new(1,-68,0,7)
+MinimizeBtn.Text = "─"
+MinimizeBtn.Font = Enum.Font.GothamBold
+MinimizeBtn.TextSize = 14
+MinimizeBtn.TextColor3 = Color3.fromRGB(150,160,180)
+MinimizeBtn.BackgroundColor3 = Color3.fromRGB(30,35,45)
+MinimizeBtn.BorderSizePixel = 0
+MinimizeBtn.AutoButtonColor = false
+Instance.new("UICorner", MinimizeBtn).CornerRadius = UDim.new(0,4)
+
+local CloseBtn = Instance.new("TextButton", Header)
+CloseBtn.Size = UDim2.fromOffset(28,28)
+CloseBtn.Position = UDim2.new(1,-35,0,7)
+CloseBtn.Text = "✕"
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.TextSize = 14
+CloseBtn.TextColor3 = Color3.fromRGB(220,80,100)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(30,35,45)
+CloseBtn.BorderSizePixel = 0
+CloseBtn.AutoButtonColor = false
+Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0,4)
+
+-- HOVER EFFECTS
+MinimizeBtn.MouseEnter:Connect(function()
+    MinimizeBtn.BackgroundColor3 = Color3.fromRGB(40,45,60)
+end)
+MinimizeBtn.MouseLeave:Connect(function()
+    MinimizeBtn.BackgroundColor3 = Color3.fromRGB(30,35,45)
+end)
+
+CloseBtn.MouseEnter:Connect(function()
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(220,80,100)
+    CloseBtn.TextColor3 = Color3.new(1,1,1)
+end)
+CloseBtn.MouseLeave:Connect(function()
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(30,35,45)
+    CloseBtn.TextColor3 = Color3.fromRGB(220,80,100)
+end)
+
+--==================================================
+-- SIDEBAR (EXACT CHLOE X STYLE)
+--==================================================
+local Sidebar = Instance.new("Frame", MainFrame)
+Sidebar.Size = UDim2.new(0,155,1,-50)
+Sidebar.Position = UDim2.new(0,6,0,46)
+Sidebar.BackgroundColor3 = Color3.fromRGB(20,24,32)
+Sidebar.BorderSizePixel = 0
+
+local SidebarCorner = Instance.new("UICorner", Sidebar)
+SidebarCorner.CornerRadius = UDim.new(0,4)
+
+local MenuList = Instance.new("ScrollingFrame", Sidebar)
+MenuList.Size = UDim2.new(1,-4,1,-4)
+MenuList.Position = UDim2.new(0,2,0,2)
+MenuList.BackgroundTransparency = 1
+MenuList.ScrollBarThickness = 2
+MenuList.ScrollBarImageColor3 = Color3.fromRGB(60,70,90)
+MenuList.BorderSizePixel = 0
+MenuList.CanvasSize = UDim2.new(0,0,0,0)
+
+local MenuLayout = Instance.new("UIListLayout", MenuList)
+MenuLayout.SortOrder = Enum.SortOrder.LayoutOrder
+MenuLayout.Padding = UDim.new(0,2)
+
+MenuLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    MenuList.CanvasSize = UDim2.new(0,0,0,MenuLayout.AbsoluteContentSize.Y + 4)
+end)
+
+local currentPage = "Info"
+
+-- MENU ITEMS (EXACT CHLOE X)
+local menuItems = {
+    {name = "Info", icon = "rbxassetid://7733992901"}, -- info
+    {name = "Fishing", icon = "rbxassetid://7743871002"}, -- activity
+    {name = "Automatically", icon = "rbxassetid://7734042071"}, -- play
+    {name = "Trading", icon = "rbxassetid://7734058285"}, -- dollar
+    {name = "Menu", icon = "rbxassetid://7734053426"}, -- star
+    {name = "Quest", icon = "rbxassetid://7743871002"}, -- list
+    {name = "Teleport", icon = "rbxassetid://7743878857"}, -- map
+    {name = "Webhook", icon = "rbxassetid://7743878496"}, -- link
+    {name = "Misc", icon = "rbxassetid://7734053495"} -- settings
+}
+
+local menuButtons = {}
+
+local function CreateMenuItem(data)
+    local Button = Instance.new("TextButton", MenuList)
+    Button.Size = UDim2.new(1,0,0,32)
+    Button.BackgroundColor3 = Color3.fromRGB(20,24,32)
+    Button.BorderSizePixel = 0
+    Button.Text = ""
+    Button.AutoButtonColor = false
+    
+    Instance.new("UICorner", Button).CornerRadius = UDim.new(0,4)
+    
+    -- ICON IMAGE
+    local IconImage = Instance.new("ImageLabel", Button)
+    IconImage.Size = UDim2.fromOffset(16,16)
+    IconImage.Position = UDim2.new(0,10,0.5,-8)
+    IconImage.BackgroundTransparency = 1
+    IconImage.Image = data.icon
+    IconImage.ImageColor3 = Color3.fromRGB(120,130,150)
+    IconImage.ScaleType = Enum.ScaleType.Fit
+    
+    -- TEXT
+    local Label = Instance.new("TextLabel", Button)
+    Label.Size = UDim2.new(1,-38,1,0)
+    Label.Position = UDim2.new(0,32,0,0)
+    Label.BackgroundTransparency = 1
+    Label.Text = "| " .. data.name
+    Label.Font = Enum.Font.Gotham
+    Label.TextSize = 12
+    Label.TextColor3 = Color3.fromRGB(120,130,150)
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    
+    -- SELECTION INDICATOR (LEFT SIDE)
+    local Indicator = Instance.new("Frame", Button)
+    Indicator.Size = UDim2.new(0,2,0.6,0)
+    Indicator.Position = UDim2.new(0,0,0.2,0)
+    Indicator.BackgroundColor3 = Color3.fromRGB(90,160,230)
+    Indicator.BorderSizePixel = 0
+    Indicator.Visible = false
+    
+    return Button, Indicator, IconImage, Label
+end
+
+for _, item in ipairs(menuItems) do
+    local btn, indicator, icon, label = CreateMenuItem(item)
+    menuButtons[item.name] = {button = btn, indicator = indicator, icon = icon, label = label}
+end
+
+--==================================================
+-- CONTENT AREA
+--==================================================
+local ContentArea = Instance.new("Frame", MainFrame)
+ContentArea.Size = UDim2.new(1,-169,1,-50)
+ContentArea.Position = UDim2.new(0,165,0,46)
+ContentArea.BackgroundColor3 = Color3.fromRGB(20,24,32)
+ContentArea.BorderSizePixel = 0
+
+local ContentCorner = Instance.new("UICorner", ContentArea)
+ContentCorner.CornerRadius = UDim.new(0,4)
+
+--==================================================
+-- INFO PAGE
+--==================================================
+local InfoPage = Instance.new("Frame", ContentArea)
+InfoPage.Size = UDim2.new(1,-12,1,-12)
+InfoPage.Position = UDim2.new(0,6,0,6)
+InfoPage.BackgroundTransparency = 1
+
+local InfoTitle = Instance.new("TextLabel", InfoPage)
+InfoTitle.Size = UDim2.new(1,0,0,28)
+InfoTitle.BackgroundTransparency = 1
+InfoTitle.Text = "Info"
+InfoTitle.Font = Enum.Font.GothamBold
+InfoTitle.TextSize = 18
+InfoTitle.TextColor3 = Color3.new(1,1,1)
+InfoTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+local InfoScroll = Instance.new("ScrollingFrame", InfoPage)
+InfoScroll.Size = UDim2.new(1,0,1,-32)
+InfoScroll.Position = UDim2.new(0,0,0,32)
+InfoScroll.BackgroundTransparency = 1
+InfoScroll.ScrollBarThickness = 2
+InfoScroll.ScrollBarImageColor3 = Color3.fromRGB(60,70,90)
+InfoScroll.BorderSizePixel = 0
+InfoScroll.CanvasSize = UDim2.new(0,0,0,0)
+
+local InfoLayoutList = Instance.new("UIListLayout", InfoScroll)
+InfoLayoutList.SortOrder = Enum.SortOrder.LayoutOrder
+InfoLayoutList.Padding = UDim.new(0,8)
+
+InfoLayoutList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    InfoScroll.CanvasSize = UDim2.new(0,0,0,InfoLayoutList.AbsoluteContentSize.Y + 8)
+end)
+
+local function CreateInfoBox(iconText, title, description, accentColor)
+    local Box = Instance.new("Frame", InfoScroll)
+    Box.Size = UDim2.new(1,-8,0,75)
+    Box.BackgroundColor3 = Color3.fromRGB(25,30,40)
+    Box.BorderSizePixel = 0
+    
+    Instance.new("UICorner", Box).CornerRadius = UDim.new(0,4)
+    
+    -- ICON/SYMBOL
+    local Icon = Instance.new("TextLabel", Box)
+    Icon.Size = UDim2.fromOffset(20,20)
+    Icon.Position = UDim2.new(0,10,0,10)
+    Icon.BackgroundTransparency = 1
+    Icon.Text = iconText
+    Icon.Font = Enum.Font.GothamBold
+    Icon.TextSize = 14
+    Icon.TextColor3 = accentColor
+    
+    -- TITLE
+    local BoxTitle = Instance.new("TextLabel", Box)
+    BoxTitle.Size = UDim2.new(1,-45,0,20)
+    BoxTitle.Position = UDim2.new(0,35,0,10)
+    BoxTitle.BackgroundTransparency = 1
+    BoxTitle.Text = title
+    BoxTitle.Font = Enum.Font.GothamBold
+    BoxTitle.TextSize = 13
+    BoxTitle.TextColor3 = accentColor
+    BoxTitle.TextXAlignment = Enum.TextXAlignment.Left
+    
+    -- DESCRIPTION
+    local BoxDesc = Instance.new("TextLabel", Box)
+    BoxDesc.Size = UDim2.new(1,-16,0,40)
+    BoxDesc.Position = UDim2.new(0,10,0,32)
+    BoxDesc.BackgroundTransparency = 1
+    BoxDesc.Text = description
+    BoxDesc.Font = Enum.Font.Gotham
+    BoxDesc.TextSize = 10
+    BoxDesc.TextColor3 = Color3.fromRGB(130,140,160)
+    BoxDesc.TextXAlignment = Enum.TextXAlignment.Left
+    BoxDesc.TextYAlignment = Enum.TextYAlignment.Top
+    BoxDesc.TextWrapped = true
+    
+    return Box
+end
+
+-- INFO BOXES
+CreateInfoBox(
+    "ℹ",
+    "Chloe X Information",
+    "This script is still under development!\nThere is a possibility it may get detected if used in public servers!",
+    Color3.fromRGB(90,160,230)
+)
+
+CreateInfoBox(
+    "⚠",
+    "Chloe X Alert!",
+    "This script is still under development!\nThere is a possibility it may get detected if used in public servers!\nIf you have suggestions or found bugs, please report them to Discord Chloe X!",
+    Color3.fromRGB(255,180,80)
+)
+
+-- DISCORD BOX (FIXED)
+local DiscordBox = Instance.new("Frame", InfoScroll)
+DiscordBox.Size = UDim2.new(1,-8,0,95)
+DiscordBox.BackgroundColor3 = Color3.fromRGB(25,30,40)
+DiscordBox.BorderSizePixel = 0
+Instance.new("UICorner", DiscordBox).CornerRadius = UDim.new(0,4)
+
+-- DISCORD ICON (TEXT FALLBACK KALO IMAGE GA LOAD)
+local DiscordIcon = Instance.new("TextLabel", DiscordBox)
+DiscordIcon.Size = UDim2.fromOffset(20,20)
+DiscordIcon.Position = UDim2.new(0,10,0,10)
+DiscordIcon.BackgroundTransparency = 1
+DiscordIcon.Text = "🎮" -- FALLBACK
+DiscordIcon.Font = Enum.Font.GothamBold
+DiscordIcon.TextSize = 16
+DiscordIcon.TextColor3 = Color3.fromRGB(114,137,218)
+
+-- TRY LOAD DISCORD IMAGE
+local DiscordLogo = Instance.new("ImageLabel", DiscordBox)
+DiscordLogo.Size = UDim2.fromOffset(18,18)
+DiscordLogo.Position = UDim2.new(0,11,0,11)
+DiscordLogo.BackgroundTransparency = 1
+DiscordLogo.Image = "rbxassetid://3570695787" -- DISCORD LOGO
+DiscordLogo.ScaleType = Enum.ScaleType.Fit
+DiscordLogo.ImageColor3 = Color3.fromRGB(114,137,218)
+
+-- HIDE TEXT IF IMAGE LOADS
+task.spawn(function()
+    task.wait(1)
+    if DiscordLogo.Image ~= "" and DiscordLogo.AbsoluteSize.X > 0 then
+        DiscordIcon.Visible = false
+    else
+        DiscordLogo.Visible = false
+    end
+end)
+
+local DiscordTitle = Instance.new("TextLabel", DiscordBox)
+DiscordTitle.Size = UDim2.new(1,-45,0,20)
+DiscordTitle.Position = UDim2.new(0,35,0,10)
+DiscordTitle.BackgroundTransparency = 1
+DiscordTitle.Text = "CHLOE X Discord"
+DiscordTitle.Font = Enum.Font.GothamBold
+DiscordTitle.TextSize = 13
+DiscordTitle.TextColor3 = Color3.fromRGB(114,137,218)
+DiscordTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+local DiscordDesc = Instance.new("TextLabel", DiscordBox)
+DiscordDesc.Size = UDim2.new(1,-16,0,16)
+DiscordDesc.Position = UDim2.new(0,10,0,32)
+DiscordDesc.BackgroundTransparency = 1
+DiscordDesc.Text = "Official link discord Chloe X!"
+DiscordDesc.Font = Enum.Font.Gotham
+DiscordDesc.TextSize = 10
+DiscordDesc.TextColor3 = Color3.fromRGB(130,140,160)
+DiscordDesc.TextXAlignment = Enum.TextXAlignment.Left
+
+-- COPY BUTTON
+local CopyBtn = Instance.new("TextButton", DiscordBox)
+CopyBtn.Size = UDim2.new(1,-16,0,32)
+CopyBtn.Position = UDim2.new(0,8,0,55)
+CopyBtn.Text = "COPY LINK DISCORD"
+CopyBtn.Font = Enum.Font.GothamBold
+CopyBtn.TextSize = 11
+CopyBtn.TextColor3 = Color3.new(1,1,1)
+CopyBtn.BackgroundColor3 = Color3.fromRGB(50,60,75)
+CopyBtn.BorderSizePixel = 0
+CopyBtn.AutoButtonColor = false
+Instance.new("UICorner", CopyBtn).CornerRadius = UDim.new(0,4)
+
+CopyBtn.MouseEnter:Connect(function()
+    CopyBtn.BackgroundColor3 = Color3.fromRGB(60,70,90)
+end)
+CopyBtn.MouseLeave:Connect(function()
+    CopyBtn.BackgroundColor3 = Color3.fromRGB(50,60,75)
+end)
+
+CopyBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/vexui") -- GANTI LINK
+    CopyBtn.Text = "✓ LINK COPIED!"
+    CopyBtn.BackgroundColor3 = Color3.fromRGB(60,180,120)
+    task.wait(1.5)
+    CopyBtn.Text = "COPY LINK DISCORD"
+    CopyBtn.BackgroundColor3 = Color3.fromRGB(50,60,75)
+end)
+
+-- REJOIN SERVER BUTTON (KAYAK CHLOE X)
+local RejoinBtn = Instance.new("TextButton", InfoScroll)
+RejoinBtn.Size = UDim2.new(1,-8,0,32)
+RejoinBtn.Text = "Rejoin Server"
+RejoinBtn.Font = Enum.Font.GothamBold
+RejoinBtn.TextSize = 11
+RejoinBtn.TextColor3 = Color3.new(1,1,1)
+RejoinBtn.BackgroundColor3 = Color3.fromRGB(50,60,75)
+RejoinBtn.BorderSizePixel = 0
+RejoinBtn.AutoButtonColor = false
+Instance.new("UICorner", RejoinBtn).CornerRadius = UDim.new(0,4)
+
+RejoinBtn.MouseEnter:Connect(function()
+    RejoinBtn.BackgroundColor3 = Color3.fromRGB(60,70,90)
+end)
+RejoinBtn.MouseLeave:Connect(function()
+    RejoinBtn.BackgroundColor3 = Color3.fromRGB(50,60,75)
+end)
+
+RejoinBtn.MouseButton1Click:Connect(function()
+    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, Player)
+end)
+
+--==================================================
+-- MENU SELECTION
+--==================================================
+local function SelectPage(pageName)
+    currentPage = pageName
+    
+    for name, data in pairs(menuButtons) do
+        if name == pageName then
+            data.indicator.Visible = true
+            data.button.BackgroundColor3 = Color3.fromRGB(30,36,48)
+            data.icon.ImageColor3 = Color3.fromRGB(90,160,230)
+            data.label.TextColor3 = Color3.fromRGB(200,210,230)
+        else
+            data.indicator.Visible = false
+            data.button.BackgroundColor3 = Color3.fromRGB(20,24,32)
+            data.icon.ImageColor3 = Color3.fromRGB(120,130,150)
+            data.label.TextColor3 = Color3.fromRGB(120,130,150)
+        end
+    end
+    
+    InfoPage.Visible = (pageName == "Info")
+end
+
+for name, data in pairs(menuButtons) do
+    data.button.MouseButton1Click:Connect(function()
+        SelectPage(name)
+    end)
+    
+    -- HOVER EFFECT
+    data.button.MouseEnter:Connect(function()
+        if currentPage ~= name then
+            data.button.BackgroundColor3 = Color3.fromRGB(25,30,40)
+        end
+    end)
+    
+    data.button.MouseLeave:Connect(function()
+        if currentPage ~= name then
+            data.button.BackgroundColor3 = Color3.fromRGB(20,24,32)
+        end
+    end)
+end
+
+SelectPage("Info")
+
+--==================================================
+-- DRAG
+--==================================================
+do
+    local dragging, dragStart, startPos
+    
+    Header.InputBegan:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = i.Position
+            startPos = MainFrame.Position
+        end
+    end)
+    
+    Header.InputEnded:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+    
+    UIS.InputChanged:Connect(function(i)
+        if dragging and (i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch) then
+            local delta = i.Position - dragStart
+            MainFrame.Position = startPos + UDim2.fromOffset(delta.X, delta.Y)
+        end
+    end)
+end
+
+do
+    local dragging, dragStart, startPos
+    
+    LogoButton.InputBegan:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = i.Position
+            startPos = LogoButton.Position
+        end
+    end)
+    
+    LogoButton.InputEnded:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+    
+    UIS.InputChanged:Connect(function(i)
+        if dragging and (i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch) then
+            local delta = i.Position - dragStart
+            LogoButton.Position = startPos + UDim2.fromOffset(delta.X, delta.Y)
+        end
+    end)
+end
+
+--==================================================
+-- LOGO ANIMATION
+--==================================================
+local function ShowLogoAnimated()
+    LogoButton.Visible = true
+    LogoButton.Size = UDim2.fromOffset(35,35)
+    
+    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+    TweenService:Create(LogoButton, tweenInfo, {Size = UDim2.fromOffset(70,70)}):Play()
+end
+
+--==================================================
+-- TOGGLE
+--==================================================
+local function OpenUI()
+    MainFrame.Visible = true
+    LogoButton.Visible = false
+end
+
+local function CloseUI()
+    MainFrame.Visible = false
+    ShowLogoAnimated()
+end
+
+CloseBtn.MouseButton1Click:Connect(CloseUI)
+MinimizeBtn.MouseButton1Click:Connect(CloseUI)
+LogoButton.MouseButton1Click:Connect(OpenUI)
+
+OpenUI(
+____   ____     ____  ___     .___ 
+\   \ /   /____ \   \/  /__ __|   |
+ \   Y   // __ \ \     /|  |  \   |
+  \     /\  ___/ /     \|  |  /   |
+   \___/  \___  >___/\  \____/|___|
+              \/      \_/           
+VexUI2 | Roblox Library UI
+Author: Perdi / V3x")
